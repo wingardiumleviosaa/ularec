@@ -1,0 +1,16 @@
+main:
+  - name: About
+    url: '#about'
+    weight: 1
+  - name: Posts
+    url: /posts/
+    weight: 2
+  - name: Docs
+    url: /docs/
+    weight: 3
+  - name: Life
+    url: /life/
+    weight: 4
+  - name: Archive
+    url: /archive/
+    weight: 5

@@ -1,0 +1,42 @@
+{{ define "main" }}
+{{ $hasToc := and (in .TableOfContents "<li>" ) (.Params.toc) }}
+{{ $hasSidebar := or ($hasToc) (.Params.series) }}
+
+<div class="grid grid-cols-2 lg:grid-cols-8 gap-4 lg:pt-12">
+<div class="col-span-2 {{ if not $hasSidebar }} {{- print "lg:col-start-2" -}} {{ end }} lg:col-span-6 bg-secondary-bg rounded px-6 py-8">
+
+<div class="car-container car-collapse">
+  <section>
+ {{ $type := .Type }}
+  {{ $.Scratch.Set "count" 1 }}
+
+  {{ range (.Site.RegularPages.GroupByDate "2006") }}
+    {{ if and (gt .Key 1) (gt (where .Pages "Type" $type) 0) }}
+
+      {{ range (where .Pages "Type" $type) }}
+        {{ if (eq ($.Scratch.Get "count") 1) }}
+          {{ $.Scratch.Set "count" 0 }}
+          <font size="5"><b>{{ .Date.Format "2006" }}</b></font>
+        {{ end }}
+      {{ end }}
+
+      {{ $.Scratch.Set "count" 1 }}
+
+      <ul>
+      {{ range (where .Pages "Type" $type) }}
+        {{ if (ne .Params.hidden true) }}
+          <li>
+            <a href="{{ .RelPermalink }}">
+              <span>{{ .Date.Format "Jan 01" }}</span>&nbsp;&nbsp;&nbsp;{{ .Title }}
+            </a>
+          </li>
+        {{ end }}
+      {{ end }}
+      </ul>
+    {{ end }}
+  {{ end }}  
+  </section>
+</div>
+</div>
+</div>
+{{ end }}
